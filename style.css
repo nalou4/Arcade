@@ -1,6 +1,6 @@
 * {
     box-sizing: border-box;
-    /* font-family: 'Press Start 2P', cursive; */
+    font-family: 'Press Start 2P', cursive;
 }
 
 html {
@@ -15,10 +15,10 @@ body {
     align-items: center;
 }
 
-#gameBoard{
+/* #gameBoard{
     border: 3px solid;
     background-color: red;
-}
+} */
 
 #gameContainer{
     display: flex;
@@ -32,43 +32,47 @@ body {
 
 
 
-
-
-
-
-#rowContainer {
-    border: 1px solid;
+#grid {
+    border: 3px solid;
     width: 500px;
     height: 500px;
     display: flex;
     flex-direction: column;
     flex-grow: 1;
-    background-color: antiquewhite;
 }
 
-/* #row {
+#rows:nth-child(odd){
+    background-color: palevioletred;
+}
+
+#rows {
     display: flex;
     flex-grow: 1;
     padding: auto;
-} */
+}
 
+#rows:nth-child(even){
+    background-color: blueviolet;
 
-.square{
+}
+
+#square{
     width: 25px;
     height: 25px;
 }
 
-.line{
-    border: 1px solid pink;
-}
-
-.square:nth-child(odd){
+#square:nth-child(odd){
     background-color: aqua;
     }
-.square:nth-child(even) {
+#square:nth-child(even) {
     background-color: blue;
     }
     
+#square{
+    width: 25px;
+    height: 25px;
+    background-color: red;
+}
     
 
 
