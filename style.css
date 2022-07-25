@@ -1,0 +1,88 @@
+* {
+    box-sizing: border-box;
+    /* font-family: 'Press Start 2P', cursive; */
+}
+
+html {
+    background-color: #222;
+    color: white;
+
+}
+
+body {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+#gameBoard{
+    border: 3px solid;
+    background-color: red;
+}
+
+#gameContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.option{
+    text-align: center;
+}
+
+
+
+
+
+
+
+#rowContainer {
+    border: 1px solid;
+    width: 500px;
+    height: 500px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    background-color: antiquewhite;
+}
+
+/* #row {
+    display: flex;
+    flex-grow: 1;
+    padding: auto;
+} */
+
+
+.square{
+    width: 25px;
+    height: 25px;
+}
+
+.line{
+    border: 1px solid pink;
+}
+
+.square:nth-child(odd){
+    background-color: aqua;
+    }
+.square:nth-child(even) {
+    background-color: blue;
+    }
+    
+    
+
+
+
+
+
+
+
+/* section.container{
+    display: flex;
+    flex-grow: 1;
+
+} */
+
+/* .rowContainer (
+
+) */
