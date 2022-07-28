@@ -6,15 +6,15 @@ var table = document.createElement('table');
 var tableBody = document.createElement('tbody');
 let running = false;
 let snake = {
-    body: [[1, 1], [1, 2], [1, 3], [1, 4]],
+    body: [[0, 0], [0, 1], [0, 2], [0, 3] ],
     nextDirection: [0, 1]
 }
 let gameState = {
     appleArr: [],
     snake: snake
 }
-let xVelocity = 25;
-let yVelocity = 0;
+// let xVelocity = 25;
+// let yVelocity = 0;
 let score = 0;
 let appleX;
 let appleY;
@@ -31,10 +31,8 @@ initializeGame();
 function initializeGame() {
     running = true;
     scoreText.textContent = `Score: ${score}`;
-    createApple();
-    nextTick();
     createTable([
-        ["0, 0", "0, 1", "1, 2", "0, 3", "0, 4", "0, 5", "0, 6", "0, 7", "0, 8", "0, 9", "0, 10", "0, 11", "0, 12", "0, 13", "0, 14", "0, 15", "0, 16", "0, 17", "0, 18", "0, 19"],
+        ["0, 0", "0, 1", "0, 2", "0, 3", "0, 4", "0, 5", "0, 6", "0, 7", "0, 8", "0, 9", "0, 10", "0, 11", "0, 12", "0, 13", "0, 14", "0, 15", "0, 16", "0, 17", "0, 18", "0, 19"],
         ["1, 0", "1, 1", "1, 2", "1, 3", "1, 4", "1, 5", "1, 6", "1, 7", "1, 8", "1, 9", "1, 10", "1, 11", "1, 12", "1, 13", "1, 14", "1, 15", "1, 16", "1, 17", "1, 18", "1, 19"],
         ["2, 0", "2, 1", "2, 2", "2, 3", "2, 4", "2, 5", "2, 6", "2, 7", "2, 8", "2, 9", "2, 10", "2, 11", "2, 12", "2, 13", "2, 14", "2, 15", "2, 16", "2, 17", "2, 18", "2, 19"],
         ["3, 0", "3, 1", "3, 2", "3, 3", "3, 4", "3, 5", "3, 6", "3, 7", "3, 8", "3, 9", "3, 10", "3, 11", "3, 12", "3, 13", "3, 14", "3, 15", "3, 16", "3, 17", "3, 18", "3, 19"],
@@ -55,8 +53,9 @@ function initializeGame() {
         ["18, 0", "18, 1", "18, 2", "18, 3", "18, 4", "18, 5", "18, 6", "18, 7", "18, 8", "18, 9", "18, 10", "18, 11", "18, 12", "18, 13", "18, 14", "18, 15", "18, 16", "18, 17", "18, 18", "18, 19"],
         ["19, 0", "19, 1", "19, 2", "19, 3", "19, 4", "19, 5", "19, 6", "19, 7", "19, 8", "19, 9", "19, 10", "19, 11", "19, 12", "19, 13", "19, 14", "19, 15", "19, 16", "19, 17", "19, 18", "19, 19"]
     ]);
+    createApple();
     paintApple();
-    paintSnake();
+    nextTick();
 }
 
 function createApple() {
@@ -71,20 +70,8 @@ function createApple() {
     gameState.appleArr.push(apple);
 };
 
-function nextTick() {
-    // if (running){
-
-    // }
-    moveSnake();
+function checkGameOver(){
 };
-
-function moveSnake() {
-    snake;
-    snake.body.shift();
-    let headX = snake.body[snake.body.length - 1][0]
-    let headY = snake.body[snake.body.length - 1][1]
-    snake.body.push([(headX + snake.nextDirection[0]), (headY + snake.nextDirection[1])])
-}
 
 function changeDirection() {
 };
@@ -101,7 +88,7 @@ function createTable(tableData) {
             var cell = document.createElement('td');
             cell.appendChild(document.createTextNode(cellData));
             row.appendChild(cell);
-            for (let i = 0; i < 20; i++) {
+            for (let i = 0; i < 20; i++){
                 cell.className = "square"
                 // cell.
             }
@@ -115,24 +102,125 @@ function createTable(tableData) {
 
 }
 
-
-// console.log(apple);
-// console.log(apple[0]);
-// console.log(apple[1]);
-// console.log(table);
-function paintApple() {
+function paintApple(){
     let tbody = table.childNodes[0];
     let tr = tbody.childNodes;
-    for (let i = 0; i < tr.length; i++) {
+    for (let i = 0; i < tr.length; i++){
         let tds = tr[i].childNodes
         for (let j = 0; j < tds.length; j++) {
             let td = tds[j]
-            if (apple[0] === i && apple[1] === j) {
+            if (apple[0] === i && apple[1] === j){
                 td.classList.add('apple')
             };
         }
     };
 };
+
+function paintSnake(){
+    let tbody = table.childNodes[0];
+    let tr = tbody.childNodes;
+    for (let i = 0; i < tr.length; i++){
+        let tds = tr[i].childNodes
+        for (let j = 0; j < tds.length; j++) {
+            let td = tds[j];
+            for(let k = 0; k < snake.body.length; k++){
+                // let snakePartX = snake.body[0];
+                // let snakePartY = snake.body[1];
+                if (snake.body[k][0] === i && snake.body[k][1] === j){
+                    td.classList.add('snake')
+                }
+            }
+        }
+    };
+};
+
+function unPaintSnake(){
+    let tbody = table.childNodes[0];
+    let tr = tbody.childNodes;
+    for (let i = 0; i < tr.length; i++){
+        let tds = tr[i].childNodes
+        for (let j = 0; j < tds.length; j++) {
+            let td = tds[j];
+            for(let k = 0; k < snake.body.length; k++){
+                if (snake.body[k][0] !== i && snake.body[k][1] !== j){
+                    td.classList.remove('snake')
+                }
+            }
+        }
+    };
+}
+
+function moveSnake(){
+    paintSnake();
+    const head = {
+        x: snake.body[snake.body.length - 1][0],
+        y: snake.body[snake.body.length - 1][1]
+    }
+    // console.log(head.x)
+    // console.log(head.y);
+
+    let growSnake = snake.body.push([(head.x + snake.nextDirection[0]), (head.y + snake.nextDirection[1])]);
+
+
+
+    if(snake.body[0][0]=== apple[0] && snake.body[0][1] === apple[1]){
+        growSnake;
+    } else {
+        snake.body.shift(snake.body[0][0], snake.body[0][1]);
+    }
+    console.log(snake.body)
+    unPaintSnake();
+};
+
+
+// function nextTick(){
+//     // if (running){
+//     //     setInterval(()=>{
+//     //         moveSnake();
+//     //         checkGameOver();
+//     //         nextTick();
+//     //     }, 1000);
+//     // }
+
+//     moveSnake();
+//     checkGameOver();
+//     nextTick();
+
+// };
+
+function nextTick(){
+    moveSnake();
+    moveSnake();
+    moveSnake();
+    moveSnake();
+    moveSnake();
+    moveSnake();
+
+
+
+    // moveSnake();
+    // moveSnake();
+
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 // let snake = {
 //     body: [[1, 1], [1, 2], [1, 3], [1, 4]],
@@ -140,28 +228,40 @@ function paintApple() {
 // }
 
 
-console.log(snake.body);
-function paintSnake() {
-    let tbody = table.childNodes[0];
-    let tr = tbody.childNodes;
-    for (let i = 0; i < tr.length; i++) {
-        let tds = tr[i].childNodes
-        for (let j = 0; j < tds.length; j++) {
-            let td = tds[j];
-            if (snake.body[0][0] === i && snake.body[0][1] === j) {
-                td.classList.add('snake')
-            };
-            // for (let k = 0; k < snake.body.length; k++) {
-            //     let snakePartX = snake.body[0];
-            //     let snakePartY = snake.body[1];
+// console.log(snake.body);
+// function paintSnake() {
+//     let tbody = table.childNodes[0];
+//     let tr = tbody.childNodes;
+//     for (let i = 0; i < tr.length; i++) {
+//         let tds = tr[i].childNodes
+//         for (let j = 0; j < tds.length; j++) {
+//             let td = tds[j];
+//             if (snake.body[0][0] === i && snake.body[0][1] === j) {
+//                 console.log(snake.body[0][0]);
+//                 td.classList.add('snake')
+//             };
+//         };
+//     };
+// }
 
-            //     if (snake.body[k][0] === i && snake.body[k][1] === j) {
-            //         td.classList.add('snake')
-            //     };
-            // }
-        }
-    };
-}
+
+
+
+// console.log(snake.body);
+// function paintSnake() {
+//     let tbody = table.childNodes[0];
+//     let tr = tbody.childNodes;
+//     for (let i = 0; i < tr.length; i++) {
+//         let tds = tr[i].childNodes
+//         for (let j = 0; j < tds.length; j++) {
+//             let td = tds[j];
+//             if (snake.body[0][0] === i && snake.body[0][1] === j) {
+//                 console.log(snake.body[0])
+//                 td.classList.add('snake')
+//             };
+//         };
+//     };
+// }
 
 
 

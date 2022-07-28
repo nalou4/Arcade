@@ -60,6 +60,11 @@ td.square{
 .apple{
     background-color: red;
 }
+
+.snake{
+    background-color: lightgreen;
+    
+}
     
 /* td.square:nth-child(odd){
     background-color: aqua;
