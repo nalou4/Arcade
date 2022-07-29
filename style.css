@@ -24,17 +24,18 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+    padding: 20px;
 }
 
 .option{
     text-align: center;
 }
 
-
 table{
     border: 5px solid;
     width: 500px;
     height: 500px;
+
 }
 
 tbody{
@@ -58,12 +59,24 @@ td.square{
 }
 
 .apple{
-    background-color: red;
+    background-color: palevioletred;
 }
 
 .snake{
     background-color: lightgreen;
     
+}
+#grid{
+    display: flex;
+    flex-grow: 1;
+}
+
+span{
+    /* display: none; */
+    /* position: fixed; */
+    color: aqua;
+    font-size: xx-large;
+
 }
     
 /* td.square:nth-child(odd){

@@ -4,29 +4,32 @@ const resetButton = document.querySelector("#resetButton");
 let square = document.getElementsByClassName("square");
 var table = document.createElement('table');
 var tableBody = document.createElement('tbody');
+const gameOverText = document.createTextNode("GAME OVER!");
+const span = document.createElement("span");
 let running = false;
 let snake = {
-    body: [[0, 0], [0, 1], [0, 2], [0, 3] ],
-    nextDirection: [0, 1]
-}
+    body: [[0, 0], [0, 1], [0, 2], [0, 3]],
+    nextDirection: [0, 1],
+};
 let gameState = {
     appleArr: [],
     snake: snake
-}
-// let xVelocity = 25;
-// let yVelocity = 0;
+};
 let score = 0;
 let appleX;
 let appleY;
 let apple = [];
-var matrix = [];
-// const rowContainer = document.getElementById("grid");
-// const squareContainer = document.getElementById("rows");
-// const coordinates = document.getElementById("square");
+const selectMode = document.querySelector(".Mode")
 
-window.addEventListener('keydown', changeDirection);
+// selectMode.addEventListener('change', (event) => {
+//     let mode = event.target.value;
+//     console.log(mode)
+// });
+document.addEventListener('click', changeDirection);
 resetButton.addEventListener('click', resetGame);
+document.getElementById("grid").appendChild(span);
 initializeGame();
+
 
 function initializeGame() {
     running = true;
@@ -55,29 +58,9 @@ function initializeGame() {
     ]);
     createApple();
     paintApple();
+    paintSnake();
     nextTick();
 }
-
-function createApple() {
-    function randomFood(min, max) {
-        const randomNum = Math.round((Math.random() * (max - min) + min) / 25)
-        return randomNum;
-    }
-    appleX = randomFood(0, (500 - 25));
-    apple.push(appleX);
-    appleY = randomFood(0, (500 - 25));
-    apple.push(appleY);
-    gameState.appleArr.push(apple);
-};
-
-function checkGameOver(){
-};
-
-function changeDirection() {
-};
-
-function resetGame() {
-};
 
 function createTable(tableData) {
 
@@ -88,7 +71,7 @@ function createTable(tableData) {
             var cell = document.createElement('td');
             cell.appendChild(document.createTextNode(cellData));
             row.appendChild(cell);
-            for (let i = 0; i < 20; i++){
+            for (let i = 0; i < 20; i++) {
                 cell.className = "square"
                 // cell.
             }
@@ -102,207 +85,151 @@ function createTable(tableData) {
 
 }
 
-function paintApple(){
+function nextTick() {
+    if (running) {
+        setTimeout(() => {
+            moveSnake();
+            paintSnake();
+            checkGameOver();
+            nextTick();
+        }, 75);
+        /* change to 100 for easy, 50 for difficult */
+    } else {
+        displayGameOver();
+    }
+};
+
+function createApple() {
+    function randomFood(min, max) {
+        const randomNum = Math.round((Math.random() * (max - min) + min) / 25)
+        return randomNum;
+    }
+    appleX = randomFood(0, (500 - 25));
+    apple.push(appleX);
+    appleY = randomFood(0, (500 - 25));
+    apple.push(appleY);
+    gameState.appleArr.push(apple);
+};
+
+function paintApple() {
     let tbody = table.childNodes[0];
     let tr = tbody.childNodes;
-    for (let i = 0; i < tr.length; i++){
+    for (let i = 0; i < tr.length; i++) {
         let tds = tr[i].childNodes
         for (let j = 0; j < tds.length; j++) {
             let td = tds[j]
-            if (apple[0] === i && apple[1] === j){
+            if (apple[0] === i && apple[1] === j) {
                 td.classList.add('apple')
             };
         }
     };
 };
 
-function paintSnake(){
-    let tbody = table.childNodes[0];
-    let tr = tbody.childNodes;
-    for (let i = 0; i < tr.length; i++){
-        let tds = tr[i].childNodes
-        for (let j = 0; j < tds.length; j++) {
-            let td = tds[j];
-            for(let k = 0; k < snake.body.length; k++){
-                // let snakePartX = snake.body[0];
-                // let snakePartY = snake.body[1];
-                if (snake.body[k][0] === i && snake.body[k][1] === j){
-                    td.classList.add('snake')
-                }
-            }
-        }
-    };
-};
-
-function unPaintSnake(){
-    let tbody = table.childNodes[0];
-    let tr = tbody.childNodes;
-    for (let i = 0; i < tr.length; i++){
-        let tds = tr[i].childNodes
-        for (let j = 0; j < tds.length; j++) {
-            let td = tds[j];
-            for(let k = 0; k < snake.body.length; k++){
-                if (snake.body[k][0] !== i && snake.body[k][1] !== j){
-                    td.classList.remove('snake')
-                }
-            }
-        }
-    };
-}
-
-function moveSnake(){
-    paintSnake();
+function moveSnake() {
     const head = {
         x: snake.body[snake.body.length - 1][0],
         y: snake.body[snake.body.length - 1][1]
-    }
-    // console.log(head.x)
-    // console.log(head.y);
-
+    };
     let growSnake = snake.body.push([(head.x + snake.nextDirection[0]), (head.y + snake.nextDirection[1])]);
-
-
-
-    if(snake.body[0][0]=== apple[0] && snake.body[0][1] === apple[1]){
+    if (snake.body[0][0] === apple[0] && snake.body[0][1] === apple[1]) {
         growSnake;
     } else {
         snake.body.shift(snake.body[0][0], snake.body[0][1]);
+    };
+};
+
+function paintSnake() {
+    let tbody = table.childNodes[0];
+    let tr = tbody.childNodes;
+    for (let i = 0; i < tr.length; i++) {
+        let tds = tr[i].childNodes
+        for (let j = 0; j < tds.length; j++) {
+            let td = tds[j];
+            for (let k = 0; k < snake.body.length; k++) {
+                if (k === 0) {
+                    td.classList.remove('snake');
+                };
+                if (snake.body[k][0] === i && snake.body[k][1] === j) {
+                    td.classList.add('snake');
+                };
+            };
+        };
+    };
+};
+
+function changeDirection(event) {
+    // const keyPressed = event.keyCode;
+    // const LEFT = 37;
+    // const UP = 38;
+    // const RIGHT = 39;
+    // const DOWN = 40;
+
+    // const goingUp = snake.nextDirection === [0, 1];
+    // console.log(goingUp);
+    // const goingDown = snake.nextDirection === [0, -1];
+    // console.log(goingDown);
+    // const goingRight = snake.nextDirection === [1, 0];
+    // console.log(goingRight);
+    // const goingLeft = snake.nextDirection === [-1, 0];
+    // console.log(goingLeft);
+    const goingRight = (snake.nextDirection === [0, 1]);
+        console.log(snake.nextDirection)
+        console.log(goingRight)
+
+
+
+    // switch (true) {
+    //     case (keyPressed == LEFT && !goingRight):
+    //         snake[nextDirection][0] = -1;
+    //         snake[nextDirection][1] = 0;
+    //         break;
+    //     case (keyPressed == UP && !goingDown):
+    //         snake[nextDirection][0] = 0;
+    //         snake[nextDirection][1] = 1;
+    //         break;
+    //     case (keyPressed == RIGHT && !goingLeft):
+    //         snake[nextDirection][0] = 1;
+    //         snake[nextDirection][1] = 0;
+    //         break;
+    //     case (keyPressed == DOWN && !goingUp):
+    //         snake[nextDirection][0] = 0;
+    //         snake[nextDirection][1] = -1;
+    //         break;
+    // }
+};
+
+function checkGameOver() {
+    let headX = snake.body[snake.body.length - 1][0];
+    let headY = snake.body[snake.body.length - 1][1];
+    switch (true) {
+        case (headX < 0):
+            running = false;
+            break;
+        case (headX >= 20):
+            running = false;
+        case (headY < 0):
+            running = false;
+        case (headY >= 20):
+            running = false;
+            break;
     }
-    console.log(snake.body)
-    unPaintSnake();
+    // for (let i = 1; i < snake.body.length; i++){
+    //     if (snake.body[i][0] === headX && snake.body[i][1]=== headY);
+    //         running = false;
+    // }
 };
 
 
-// function nextTick(){
-//     // if (running){
-//     //     setInterval(()=>{
-//     //         moveSnake();
-//     //         checkGameOver();
-//     //         nextTick();
-//     //     }, 1000);
-//     // }
-
-//     moveSnake();
-//     checkGameOver();
-//     nextTick();
-
-// };
-
-function nextTick(){
-    moveSnake();
-    moveSnake();
-    moveSnake();
-    moveSnake();
-    moveSnake();
-    moveSnake();
-
-
-
-    // moveSnake();
-    // moveSnake();
-
+function displayGameOver() {
+    span.appendChild(gameOverText);
 };
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// let snake = {
-//     body: [[1, 1], [1, 2], [1, 3], [1, 4]],
-//     nextDirection: [0, 1]
-// }
-
-
-// console.log(snake.body);
-// function paintSnake() {
-//     let tbody = table.childNodes[0];
-//     let tr = tbody.childNodes;
-//     for (let i = 0; i < tr.length; i++) {
-//         let tds = tr[i].childNodes
-//         for (let j = 0; j < tds.length; j++) {
-//             let td = tds[j];
-//             if (snake.body[0][0] === i && snake.body[0][1] === j) {
-//                 console.log(snake.body[0][0]);
-//                 td.classList.add('snake')
-//             };
-//         };
-//     };
-// }
-
-
-
-
-// console.log(snake.body);
-// function paintSnake() {
-//     let tbody = table.childNodes[0];
-//     let tr = tbody.childNodes;
-//     for (let i = 0; i < tr.length; i++) {
-//         let tds = tr[i].childNodes
-//         for (let j = 0; j < tds.length; j++) {
-//             let td = tds[j];
-//             if (snake.body[0][0] === i && snake.body[0][1] === j) {
-//                 console.log(snake.body[0])
-//                 td.classList.add('snake')
-//             };
-//         };
-//     };
-// }
-
-
-
-
-
-
-
-
-
-
-
-
-// function renderRows (){
-//     for (let i = 0; i < 20; i++){
-//         const rows = document.createElement("div");
-//         rows.setAttribute('id', 'rows');
-//         rows.className = "squareContainer"
-//         document.getElementById("grid").appendChild(rows)
-//     };
-// };
-
-// function renderSquares (){
-//     for (let i = 0; i < 20; i++){
-//         let square = document.createElement("div");
-//         square.setAttribute('id','square');
-//         square.className = "coordinates";
-//         document.getElementById("rows").appendChild(square);
-//     }
-// } 
-
-
-// function renderGrid(){
-//     for (let i = 0; i < 20; i++){
-//         let rows = document.createElement("div")
-//         rows.className = "rows";
-//         rowContainer.appendChild(rows)
-//     }
-//     renderSquares()
-// }
-
-
-
-
-
+function resetGame() {
+    createTable();
+    score = 0;
+    snake = {
+        body: [[0, 0], [0, 1], [0, 2], [0, 3]],
+        nextDirection: [0, 1],
+    };
+    initializeGame();
+};

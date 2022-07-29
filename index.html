@@ -13,9 +13,9 @@
     <div id="gameContainer">
         <!-- <button id="startButton">Start</button> -->
         <select name="Game Mode" id="Mode">
-            <option class="option" value="Easy">Easy</option>
-            <option class="option" value="Medium">Medium</option>
-            <option class="option" value="Difficult">Difficult</option>
+            <option class="option" value="easyMode">Easy</option>
+            <option class="option" value="mediumMode">Medium</option>
+            <option class="option" value="difficultMode">Difficult</option>
         </select>
         <!-- <canvas id="gameBoard" width="500" height="500"></canvas> -->
         <button id="resetButton">Start</button>
@@ -26,7 +26,12 @@
             <div id="square" class="coordinates" ></div>
         </div>
     </div> -->
-    <div id="grid" class="rowContainer"></div>
+    <div id="grid" class="rowContainer">
+        <!-- <div id="overlay">
+            GAME OVER!
+        </div> -->
+    </div>
+
     <script src="app.js"></script>
 </body>
 </html>
