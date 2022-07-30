@@ -1,5 +1,6 @@
 let grid = document.getElementById("grid");
 const scoreText = document.querySelector("#scoreText");
+const highScoreText = document.querySelector("#highScoreText");
 const resetButton = document.querySelector("#resetButton");
 let square = document.getElementsByClassName("square");
 var table = document.createElement('table');
@@ -41,7 +42,7 @@ let tableArray = [
     ["18, 0", "18, 1", "18, 2", "18, 3", "18, 4", "18, 5", "18, 6", "18, 7", "18, 8", "18, 9", "18, 10", "18, 11", "18, 12", "18, 13", "18, 14", "18, 15", "18, 16", "18, 17", "18, 18", "18, 19"],
     ["19, 0", "19, 1", "19, 2", "19, 3", "19, 4", "19, 5", "19, 6", "19, 7", "19, 8", "19, 9", "19, 10", "19, 11", "19, 12", "19, 13", "19, 14", "19, 15", "19, 16", "19, 17", "19, 18", "19, 19"]
 ];
-// ********************
+let highScore = "0";
 const selectMode = document.getElementById("Mode");
 selectMode.addEventListener("click", function(){
     var options = selectMode.querySelectorAll("option");
@@ -103,7 +104,7 @@ function nextTick() {
             moveSnake();
             paintSnake();
             nextTick();
-        }, 200);
+        }, 100);
     };
     if (running && selectMode.value == "mediumMode") {
         setTimeout(() => {
@@ -112,7 +113,7 @@ function nextTick() {
             moveSnake();
             paintSnake();
             nextTick();
-        }, 100);
+        }, 75);
     };
     if (running && selectMode.value == "difficultMode") {
         setTimeout(() => {
@@ -122,8 +123,6 @@ function nextTick() {
             paintSnake();
             nextTick();
         }, 50);
-    } else {
-        displayGameOver();
     };
 };
 
@@ -258,11 +257,19 @@ function checkGameOver() {
         case (head.y >= 20):
             running = false;
             break;
-    }
+    };
+    if (running === false){
+            displayGameOver();
+    };
+
 };
 
 function displayGameOver() {
     span.appendChild(gameOverText);
+    if (score > highScore){
+        highScoreText.textContent = `Highest Score: ${score}`;
+    };
+
 };
 
 function resetGame() {
