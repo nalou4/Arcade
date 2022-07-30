@@ -44,15 +44,68 @@ let tableArray = [
 ];
 let highScore = "0";
 const selectMode = document.getElementById("Mode");
-selectMode.addEventListener("click", function(){
+selectMode.addEventListener("click", function () {
     var options = selectMode.querySelectorAll("option");
     var count = options.length;
-    if (typeof(count) === "undefined" || count < 2)
-    {
+    if (typeof (count) === "undefined" || count < 2) {
         console.log('hello')
         nextTick();
     }
 });
+
+
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+var xDown = null;                                                        
+var yDown = null;                                                        
+
+function handleTouchStart(evt) {                                         
+    xDown = evt.touches[0].clientX;                                      
+    yDown = evt.touches[0].clientY;                                      
+};                                                
+
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
+
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+        if ( xDiff > 0 ) {
+            /* left swipe */ 
+            console.log('left swipe')
+            snake.nextDirection[0] = 0;
+            snake.nextDirection[1] = -1;
+        } else {
+            /* right swipe */
+            console.log('right swipe')
+            snake.nextDirection[0] = 0;
+            snake.nextDirection[1] = 1;
+        }                       
+    } else {
+        if ( yDiff > 0 ) {
+            /* up swipe */ 
+            console.log('up swipe')
+            snake.nextDirection[0] = -1;
+            snake.nextDirection[1] = 0;
+        } else { 
+            /* down swipe */
+            console.log('down swipe')
+            snake.nextDirection[0] = 1;
+            snake.nextDirection[1] = 0;
+        }                                                                 
+    }
+    /* reset values */
+    xDown = null;
+    yDown = null;                                             
+};
 
 document.addEventListener('keydown', changeDirection);
 resetButton.addEventListener('click', resetGame);
@@ -209,20 +262,20 @@ function changeDirection(event) {
 
     switch (true) {
         case (keyPressed == LEFT && !goingRight):
-            snake.nextDirection [0] = 0;
-            snake.nextDirection [1] = -1;
+            snake.nextDirection[0] = 0;
+            snake.nextDirection[1] = -1;
             break;
         case (keyPressed == UP && !goingDown):
-            snake.nextDirection [0] = -1;
-            snake.nextDirection [1] = 0;
+            snake.nextDirection[0] = -1;
+            snake.nextDirection[1] = 0;
             break;
         case (keyPressed == RIGHT && !goingLeft):
-            snake.nextDirection [0] = 0;
-            snake.nextDirection [1] = 1;
+            snake.nextDirection[0] = 0;
+            snake.nextDirection[1] = 1;
             break;
         case (keyPressed == DOWN && !goingUp):
-            snake.nextDirection [0] = 1;
-            snake.nextDirection [1] = 0;
+            snake.nextDirection[0] = 1;
+            snake.nextDirection[1] = 0;
             break;
     }
 };
@@ -233,8 +286,8 @@ function checkGameOver() {
         y: snake.body[snake.body.length - 1][1]
     };
 
-    for (let i = 0; i < snake.body.length-1; i ++){
-        if ((snake.body[i][0] === head.x) && (snake.body[i][1] === head.y)){
+    for (let i = 0; i < snake.body.length - 1; i++) {
+        if ((snake.body[i][0] === head.x) && (snake.body[i][1] === head.y)) {
             running = false;
         }
     }
@@ -253,15 +306,15 @@ function checkGameOver() {
             running = false;
             break;
     };
-    if (running === false){
-            displayGameOver();
+    if (running === false) {
+        displayGameOver();
     };
 
 };
 
 function displayGameOver() {
     span.appendChild(gameOverText);
-    if (score > highScore){
+    if (score > highScore) {
         highScoreText.textContent = `Highest Score: ${score}`;
     };
 };
