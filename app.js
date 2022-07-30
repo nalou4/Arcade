@@ -207,9 +207,6 @@ function changeDirection(event) {
     const goingDown = (snake.nextDirection[0] === 1);
     const goingUp = (snake.nextDirection[0] === -1);
 
-
-
-
     switch (true) {
         case (keyPressed == LEFT && !goingRight):
             snake.nextDirection [0] = 0;
