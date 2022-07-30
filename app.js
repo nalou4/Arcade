@@ -41,15 +41,23 @@ let tableArray = [
     ["18, 0", "18, 1", "18, 2", "18, 3", "18, 4", "18, 5", "18, 6", "18, 7", "18, 8", "18, 9", "18, 10", "18, 11", "18, 12", "18, 13", "18, 14", "18, 15", "18, 16", "18, 17", "18, 18", "18, 19"],
     ["19, 0", "19, 1", "19, 2", "19, 3", "19, 4", "19, 5", "19, 6", "19, 7", "19, 8", "19, 9", "19, 10", "19, 11", "19, 12", "19, 13", "19, 14", "19, 15", "19, 16", "19, 17", "19, 18", "19, 19"]
 ];
-const selectMode = document.querySelector(".Mode")
+// ********************
+const selectMode = document.getElementById("Mode");
+selectMode.addEventListener("click", function(){
+    var options = selectMode.querySelectorAll("option");
+    var count = options.length;
+    if (typeof(count) === "undefined" || count < 2)
+    {
+        console.log('hello')
+        nextTick();
+    }
+});
 
-// selectMode.addEventListener('change', (event) => {
-//     let mode = event.target.value;
-//     console.log(mode)
-// });
+
 document.addEventListener('keydown', changeDirection);
 resetButton.addEventListener('click', resetGame);
 document.getElementById("grid").appendChild(span);
+selectMode.addEventListener("change", nextTick);
 initializeGame();
 
 
@@ -88,18 +96,37 @@ function createTable(tableData) {
 }
 
 function nextTick() {
-    if (running) {
+    if (running && selectMode.value == "easyMode") {
         setTimeout(() => {
+            console.log('this is easy');
+            checkGameOver();
+            moveSnake();
+            paintSnake();
+            nextTick();
+        }, 200);
+    };
+    if (running && selectMode.value == "mediumMode") {
+        setTimeout(() => {
+            console.log('this is medium');
             checkGameOver();
             moveSnake();
             paintSnake();
             nextTick();
         }, 100);
-        /* change to 100 for easy, 50 for difficult */
+    };
+    if (running && selectMode.value == "difficultMode") {
+        setTimeout(() => {
+            console.log('this is difficult');
+            checkGameOver();
+            moveSnake();
+            paintSnake();
+            nextTick();
+        }, 50);
     } else {
         displayGameOver();
-    }
+    };
 };
+
 
 function createApple() {
     function randomFood(min, max) {
