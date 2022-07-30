@@ -9,22 +9,27 @@ html {
 
 }
 
+h1{
+    margin: 10px;
+}
+
+span{
+    margin: 10px;
+}
+
 body {
     display: flex;
     flex-direction: column;
     align-items: center;
 }
 
-/* #gameBoard{
-    border: 3px solid;
-    background-color: red;
-} */
-
 #gameContainer{
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 20px;
+    justify-content: space-between;
+    margin: 20px;
+
 }
 
 .option{
@@ -45,13 +50,13 @@ tbody{
 }
 
 tr {
-    height: 25px;
+    height: 26px;
 
 }
 
 td.square{
     color: palevioletred;
-    font-size: 10px;
+    font-size: 0px;
     font-family: monospace;
     text-align: center;
     width: 25px;
