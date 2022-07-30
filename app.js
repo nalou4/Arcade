@@ -75,32 +75,37 @@ function handleTouchMove(evt) {
     if ( ! xDown || ! yDown ) {
         return;
     }
-
     var xUp = evt.touches[0].clientX;                                    
     var yUp = evt.touches[0].clientY;
-
     var xDiff = xDown - xUp;
     var yDiff = yDown - yUp;
 
+    const goingRight = (snake.nextDirection[1] === 1);
+    const goingLeft = (snake.nextDirection[1] === -1);
+    const goingDown = (snake.nextDirection[0] === 1);
+    const goingUp = (snake.nextDirection[0] === -1);
+
     if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-        if ( xDiff > 0 ) {
+        if ( xDiff > 0 && !goingRight) {
             /* left swipe */ 
             console.log('left swipe')
             snake.nextDirection[0] = 0;
             snake.nextDirection[1] = -1;
-        } else {
+        } 
+        if ( xDiff < 0 && !goingLeft) {
             /* right swipe */
             console.log('right swipe')
             snake.nextDirection[0] = 0;
             snake.nextDirection[1] = 1;
         }                       
     } else {
-        if ( yDiff > 0 ) {
+        if ( yDiff > 0 && !goingDown) {
             /* up swipe */ 
             console.log('up swipe')
             snake.nextDirection[0] = -1;
             snake.nextDirection[1] = 0;
-        } else { 
+        }
+        if( yDiff < 0 && !goingUp)  { 
             /* down swipe */
             console.log('down swipe')
             snake.nextDirection[0] = 1;
