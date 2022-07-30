@@ -43,27 +43,74 @@ let tableArray = [
     ["19, 0", "19, 1", "19, 2", "19, 3", "19, 4", "19, 5", "19, 6", "19, 7", "19, 8", "19, 9", "19, 10", "19, 11", "19, 12", "19, 13", "19, 14", "19, 15", "19, 16", "19, 17", "19, 18", "19, 19"]
 ];
 let highScore = "0";
+const selectMode = document.getElementById("Mode");
+selectMode.addEventListener("click", function () {
+    var options = selectMode.querySelectorAll("option");
+    var count = options.length;
+    if (typeof (count) === "undefined" || count < 2) {
+        console.log('hello')
+        nextTick();
+    }
+});
+
+
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
+document.addEventListener('touchstart', handleTouchStart, false);        
+document.addEventListener('touchmove', handleTouchMove, false);
 var xDown = null;                                                        
-var yDown = null; 
+var yDown = null;                                                        
 
-document.querySelector('#scrollable').addEventListener('wheel', preventScroll, {passive: false});
+function handleTouchStart(evt) {                                         
+    xDown = evt.touches[0].clientX;                                      
+    yDown = evt.touches[0].clientY;                                      
+};                                                
 
-function preventScroll(e){
-    e.preventDefault();
-    e.stopPropagation();
+function handleTouchMove(evt) {
+    if ( ! xDown || ! yDown ) {
+        return;
+    }
 
-    return false;
-}
+    var xUp = evt.touches[0].clientX;                                    
+    var yUp = evt.touches[0].clientY;
+
+    var xDiff = xDown - xUp;
+    var yDiff = yDown - yUp;
+
+    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
+        if ( xDiff > 0 ) {
+            /* left swipe */ 
+            console.log('left swipe')
+            snake.nextDirection[0] = 0;
+            snake.nextDirection[1] = -1;
+        } else {
+            /* right swipe */
+            console.log('right swipe')
+            snake.nextDirection[0] = 0;
+            snake.nextDirection[1] = 1;
+        }                       
+    } else {
+        if ( yDiff > 0 ) {
+            /* up swipe */ 
+            console.log('up swipe')
+            snake.nextDirection[0] = -1;
+            snake.nextDirection[1] = 0;
+        } else { 
+            /* down swipe */
+            console.log('down swipe')
+            snake.nextDirection[0] = 1;
+            snake.nextDirection[1] = 0;
+        }                                                                 
+    }
+    /* reset values */
+    xDown = null;
+    yDown = null;                                             
+};
 
 document.addEventListener('keydown', changeDirection);
 resetButton.addEventListener('click', resetGame);
 document.getElementById("grid").appendChild(span);
 selectMode.addEventListener("change", nextTick);
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchmove', handleTouchMove, false);
-document.addEventListener('touchstart', handleTouchStart, false);        
-document.addEventListener('touchmove', handleTouchMove, false);               
-
 initializeGame();
 
 function initializeGame() {
@@ -77,16 +124,6 @@ function initializeGame() {
     paintSnake();
     nextTick();
 }
-
-const selectMode = document.getElementById("Mode");
-selectMode.addEventListener("click", function () {
-    var options = selectMode.querySelectorAll("option");
-    var count = options.length;
-    if (typeof (count) === "undefined" || count < 2) {
-        console.log('hello')
-        nextTick();
-    }
-});
 
 function createTable(tableData) {
 
@@ -139,6 +176,7 @@ function nextTick() {
         }, 50);
     };
 };
+
 
 function createApple() {
     function randomFood(min, max) {
@@ -208,57 +246,6 @@ function paintSnake() {
             };
         };
     };
-};
-
-function handleTouchStart(evt) {                                         
-    xDown = evt.touches[0].clientX;                                      
-    yDown = evt.touches[0].clientY;                                      
-};                                                
-
-function handleTouchMove(evt) {
-    if ( ! xDown || ! yDown ) {
-        return;
-    }
-    var xUp = evt.touches[0].clientX;                                    
-    var yUp = evt.touches[0].clientY;
-    var xDiff = xDown - xUp;
-    var yDiff = yDown - yUp;
-
-    const goingRight = (snake.nextDirection[1] === 1);
-    const goingLeft = (snake.nextDirection[1] === -1);
-    const goingDown = (snake.nextDirection[0] === 1);
-    const goingUp = (snake.nextDirection[0] === -1);
-
-    if ( Math.abs( xDiff ) > Math.abs( yDiff ) ) {/*most significant*/
-        if ( xDiff > 0 && !goingRight) {
-            /* left swipe */ 
-            console.log('left swipe')
-            snake.nextDirection[0] = 0;
-            snake.nextDirection[1] = -1;
-        } 
-        if ( xDiff < 0 && !goingLeft) {
-            /* right swipe */
-            console.log('right swipe')
-            snake.nextDirection[0] = 0;
-            snake.nextDirection[1] = 1;
-        }                       
-    } else {
-        if ( yDiff > 0 && !goingDown) {
-            /* up swipe */ 
-            console.log('up swipe')
-            snake.nextDirection[0] = -1;
-            snake.nextDirection[1] = 0;
-        }
-        if( yDiff < 0 && !goingUp)  { 
-            /* down swipe */
-            console.log('down swipe')
-            snake.nextDirection[0] = 1;
-            snake.nextDirection[1] = 0;
-        }                                                                 
-    }
-    /* reset values */
-    xDown = null;
-    yDown = null;                                             
 };
 
 function changeDirection(event) {

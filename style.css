@@ -98,5 +98,9 @@ span{
     line-height: 900px;
     text-align: center;
     z-index: 2;
+};
+
+html, body {
+    overflow: hidden;
 }
     
