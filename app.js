@@ -54,13 +54,11 @@ selectMode.addEventListener("click", function(){
     }
 });
 
-
 document.addEventListener('keydown', changeDirection);
 resetButton.addEventListener('click', resetGame);
 document.getElementById("grid").appendChild(span);
 selectMode.addEventListener("change", nextTick);
 initializeGame();
-
 
 function initializeGame() {
     running = true;
@@ -269,7 +267,6 @@ function displayGameOver() {
     if (score > highScore){
         highScoreText.textContent = `Highest Score: ${score}`;
     };
-
 };
 
 function resetGame() {
