@@ -59,7 +59,12 @@ document.addEventListener('touchmove', handleTouchMove, false);
 document.addEventListener('touchstart', handleTouchStart, false);        
 document.addEventListener('touchmove', handleTouchMove, false);
 var xDown = null;                                                        
-var yDown = null;                                                        
+var yDown = null;                
+
+document.touchmove = function(e)
+{ 
+    e.preventDefault(); 
+};
 
 function handleTouchStart(evt) {                                         
     xDown = evt.touches[0].clientX;                                      
